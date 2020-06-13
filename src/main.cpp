@@ -9,13 +9,15 @@
 #include <Arduino.h>
 #include <SPIFFS.h>
 #include <WiFi.h>
+#include <ESPAsyncWebServer.h>
 
 // ----------------------------------------------------------------------------
 // Definition of macros
 // ----------------------------------------------------------------------------
 
-#define LED_PIN 26
-#define BTN_PIN 22
+#define LED_PIN   26
+#define BTN_PIN   22
+#define HTTP_PORT 80
 
 // ----------------------------------------------------------------------------
 // Definition of global constants
@@ -98,6 +100,8 @@ Led    onboard_led = { LED_BUILTIN, false };
 Led    led         = { LED_PIN, false };
 Button button      = { BTN_PIN, HIGH, 0, 0 };
 
+AsyncWebServer server(HTTP_PORT);
+
 // ----------------------------------------------------------------------------
 // SPIFFS initialization
 // ----------------------------------------------------------------------------
@@ -128,6 +132,24 @@ void initWiFi() {
 }
 
 // ----------------------------------------------------------------------------
+// Web server initialization
+// ----------------------------------------------------------------------------
+
+String processor(const String &var) {
+    return String(var == "STATE" && led.on ? "on" : "off");
+}
+
+void onRootRequest(AsyncWebServerRequest *request) {
+  request->send(SPIFFS, "/index.html", "text/html", false, processor);
+}
+
+void initWebServer() {
+    server.on("/", onRootRequest);
+    server.serveStatic("/", SPIFFS, "/");
+    server.begin();
+}
+
+// ----------------------------------------------------------------------------
 // Initialization
 // ----------------------------------------------------------------------------
 
@@ -140,6 +162,7 @@ void setup() {
 
     initSPIFFS();
     initWiFi();
+    initWebServer();
 }
 
 // ----------------------------------------------------------------------------
