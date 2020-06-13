@@ -7,6 +7,7 @@
  */
 
 #include <Arduino.h>
+#include <SPIFFS.h>
 
 // ----------------------------------------------------------------------------
 // Definition of macros
@@ -87,16 +88,36 @@ struct Button {
 // Definition of global variables
 // ----------------------------------------------------------------------------
 
-Led    led    = { LED_PIN, false };
-Button button = { BTN_PIN, HIGH, 0, 0 };
+Led    onboard_led = { LED_BUILTIN, false };
+Led    led         = { LED_PIN, false };
+Button button      = { BTN_PIN, HIGH, 0, 0 };
+
+// ----------------------------------------------------------------------------
+// SPIFFS initialization
+// ----------------------------------------------------------------------------
+
+void initSPIFFS() {
+  if (!SPIFFS.begin()) {
+    Serial.println("Cannot mount SPIFFS volume...");
+    while (1) {
+        onboard_led.on = millis() % 200 < 50;
+        onboard_led.update();
+    }
+  }
+}
 
 // ----------------------------------------------------------------------------
 // Initialization
 // ----------------------------------------------------------------------------
 
 void setup() {
-    pinMode(led.pin,    OUTPUT);
-    pinMode(button.pin, INPUT);
+    pinMode(onboard_led.pin, OUTPUT);
+    pinMode(led.pin,         OUTPUT);
+    pinMode(button.pin,      INPUT);
+
+    Serial.begin(115200); delay(500);
+
+    initSPIFFS();
 }
 
 // ----------------------------------------------------------------------------
