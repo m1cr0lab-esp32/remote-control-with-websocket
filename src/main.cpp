@@ -8,6 +8,7 @@
 
 #include <Arduino.h>
 #include <SPIFFS.h>
+#include <WiFi.h>
 
 // ----------------------------------------------------------------------------
 // Definition of macros
@@ -20,7 +21,12 @@
 // Definition of global constants
 // ----------------------------------------------------------------------------
 
+// Button debouncing
 const uint8_t DEBOUNCE_DELAY = 10; // in milliseconds
+
+// WiFi credentials
+const char *WIFI_SSID = "YOUR_WIFI_SSID";
+const char *WIFI_PASS = "YOUR_WIFI_PASSWORD";
 
 // ----------------------------------------------------------------------------
 // Definition of the LED component
@@ -107,6 +113,21 @@ void initSPIFFS() {
 }
 
 // ----------------------------------------------------------------------------
+// Connecting to the WiFi network
+// ----------------------------------------------------------------------------
+
+void initWiFi() {
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  Serial.printf("Trying to connect [%s] ", WiFi.macAddress().c_str());
+  while (WiFi.status() != WL_CONNECTED) {
+      Serial.print(".");
+      delay(500);
+  }
+  Serial.printf(" %s\n", WiFi.localIP().toString().c_str());
+}
+
+// ----------------------------------------------------------------------------
 // Initialization
 // ----------------------------------------------------------------------------
 
@@ -118,6 +139,7 @@ void setup() {
     Serial.begin(115200); delay(500);
 
     initSPIFFS();
+    initWiFi();
 }
 
 // ----------------------------------------------------------------------------
@@ -128,6 +150,9 @@ void loop() {
     button.read();
 
     if (button.pressed()) led.on = !led.on;
+    
+    onboard_led.on = millis() % 1000 < 50;
 
     led.update();
+    onboard_led.update();
 }
