@@ -10,6 +10,7 @@
 #include <SPIFFS.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
+#include <ArduinoJson.h>
 
 // ----------------------------------------------------------------------------
 // Definition of macros
@@ -155,17 +156,34 @@ void initWebServer() {
 // ----------------------------------------------------------------------------
 
 void notifyClients() {
-    ws.textAll(led.on ? "on" : "off");
+    const uint8_t size = JSON_OBJECT_SIZE(1);
+    StaticJsonDocument<size> json;
+    json["status"] = led.on ? "on" : "off";
+
+    char buffer[17];
+    size_t len = serializeJson(json, buffer);
+    ws.textAll(buffer, len);
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
-        data[len] = 0;
-        if (strcmp((char*)data, "toggle") == 0) {
+
+        const uint8_t size = JSON_OBJECT_SIZE(1);
+        StaticJsonDocument<size> json;
+        DeserializationError err = deserializeJson(json, data);
+        if (err) {
+            Serial.print(F("deserializeJson() failed with code "));
+            Serial.println(err.c_str());
+            return;
+        }
+
+        const char *action = json["action"];
+        if (strcmp(action, "toggle") == 0) {
             led.on = !led.on;
             notifyClients();
         }
+
     }
 }
 

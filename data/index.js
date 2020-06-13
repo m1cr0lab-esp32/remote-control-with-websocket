@@ -42,7 +42,8 @@ function onClose(event) {
 }
 
 function onMessage(event) {
-    document.getElementById('led').className = event.data;
+    let data = JSON.parse(event.data);
+    document.getElementById('led').className = data.status;
 }
 
 // ----------------------------------------------------------------------------
@@ -54,5 +55,5 @@ function initButton() {
 }
 
 function onToggle(event) {
-    websocket.send('toggle');
+    websocket.send(JSON.stringify({'action':'toggle'}));
 }
