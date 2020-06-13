@@ -101,6 +101,7 @@ Led    led         = { LED_PIN, false };
 Button button      = { BTN_PIN, HIGH, 0, 0 };
 
 AsyncWebServer server(HTTP_PORT);
+AsyncWebSocket ws("/ws");
 
 // ----------------------------------------------------------------------------
 // SPIFFS initialization
@@ -150,6 +151,36 @@ void initWebServer() {
 }
 
 // ----------------------------------------------------------------------------
+// WebSocket initialization
+// ----------------------------------------------------------------------------
+
+void onEvent(AsyncWebSocket       *server,
+             AsyncWebSocketClient *client,
+             AwsEventType          type,
+             void                 *arg,
+             uint8_t              *data,
+             size_t                len) {
+
+    switch (type) {
+        case WS_EVT_CONNECT:
+            Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
+            break;
+        case WS_EVT_DISCONNECT:
+            Serial.printf("WebSocket client #%u disconnected\n", client->id());
+            break;
+        case WS_EVT_DATA:
+        case WS_EVT_PONG:
+        case WS_EVT_ERROR:
+            break;
+    }
+}
+
+void initWebSocket() {
+    ws.onEvent(onEvent);
+    server.addHandler(&ws);
+}
+
+// ----------------------------------------------------------------------------
 // Initialization
 // ----------------------------------------------------------------------------
 
@@ -162,6 +193,7 @@ void setup() {
 
     initSPIFFS();
     initWiFi();
+    initWebSocket();
     initWebServer();
 }
 
@@ -170,6 +202,8 @@ void setup() {
 // ----------------------------------------------------------------------------
 
 void loop() {
+    ws.cleanupClients();
+
     button.read();
 
     if (button.pressed()) led.on = !led.on;
