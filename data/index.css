@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+/**
+ * ----------------------------------------------------------------------------
+ * ESP32 Remote Control with WebSocket
+ * ----------------------------------------------------------------------------
+ * © 2020 Stéphane Calderoni
+ * ----------------------------------------------------------------------------
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Roboto, sans-serif;
+  font-size: 12pt;
+  overflow: hidden;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.panel {
+  display: grid;
+  grid-gap: 3em;
+  justify-items: center;
+}
+
+h1 {
+  font-size: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#led {
+  position: relative;
+  width: 5em;
+  height: 5em;
+  border: 2px solid #000;
+  border-radius: 2.5em;
+  background-image: radial-gradient(farthest-corner at 50% 20%, #b30000 0%, #330000 100%);
+  box-shadow: 0 0.5em 1em rgba(102, 0, 0, 0.3);
+}
+#led.on {
+  background-image: radial-gradient(farthest-corner at 50% 75%, red 0%, #990000 100%);
+  box-shadow: 0 1em 1.5em rgba(255, 0, 0, 0.5);
+}
+#led:after {
+  content: '';
+  position: absolute;
+  top: .3em;
+  left: 1em;
+  width: 60%;
+  height: 40%;
+  border-radius: 60%;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+}
+
+button {
+  padding: .5em .75em;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 -1px 1px #000;
+  border: 1px solid #000;
+  border-radius: .5em;
+  background-image: linear-gradient(#2e3538, #73848c);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5), 0 0.2em 0.4em rgba(0, 0, 0, 0.4);
+  outline: none;
+}
+button:active {
+  transform: translateY(2px);
+}
