@@ -1,0 +1,11 @@
+{% assign current_year = "now" | date: "%Y" | plus: 0 %}
+{% capture years %}
+    {% if current_year > site.labstart %}
+        {{ site.labstart }}-{{ current_year }}
+    {% elsif current_year < site.labstart %}
+        {{ current_year }}-{{ site.labstart }}
+    {% else %}
+        {{ current_year }}
+    {% endif %}
+{% endcapture %}
+<p class="text-small text-grey-dk-000 mb-4 text-center">&copy; {{ years }} Stéphane Calderoni</p>

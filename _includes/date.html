@@ -1,0 +1,7 @@
+{% if page.date %}
+    {{ page.date | date: '%A, %B %d, %Y' }}
+{% elsif site.date %}
+    {{ site.date | date: '%A, %B %d, %Y' }}
+{% else %}
+    {{ "now" | date: '%A, %B %d, %Y' }}
+{% endif %}
