@@ -1,7 +1,11 @@
+{% capture last_update %}
+{{ "now" | date: '%A, %B %d, %Y' }}
+{% endcapture %}
+
 {% if page.date %}
-    {{ page.date | date: '%A, %B %d, %Y' }}
+    {{ page.date | date: '%A, %B %d, %Y' }} &nbsp; <span class="lastupdate">( Last update: {{ last_update }})</span>
 {% elsif site.date %}
-    {{ site.date | date: '%A, %B %d, %Y' }}
+    {{ site.date | date: '%A, %B %d, %Y' }} &nbsp; <span class="lastupdate">( Last update: {{ last_update }})</span>
 {% else %}
-    {{ "now" | date: '%A, %B %d, %Y' }}
+    {{ last_update }}
 {% endif %}

@@ -66,12 +66,12 @@ If you still want to use the Arduino IDE, just create a project named `esp32-rc-
 
 # How to Track Project Progress with Git
 
-For your convenience and to make sure you approach each new chapter with the full code from the previous chapter, you can clone the repository associated with the tutorial and use Git to put yourself in the context of a particular chapter. Then you can simply copy my code into your own project.
+For your convenience and to make sure you approach each new chapter with the full code from the previous chapter, you can clone [the repository associated with the tutorial][rep] and use Git to put yourself in the context of a particular chapter. Then you can simply copy my code into your own project.
 
 To clone the reference repository, go to your project's parent directory (which should be the directory where PlatformIO stores all your projects), and run the following command:
 
 ```
-git clone {{ site.github.repository_url }}
+git clone {{ site.github.repository_url }}.git
 ```
 
 After that you should have the following two directories in the PlatformIO projects folder:
@@ -165,3 +165,4 @@ All right, we're ready to go!
 
 [vsc]: https://code.visualstudio.com/
 [pio]: https://platformio.org/
+[rep]: {{ site.github.repository_url }}

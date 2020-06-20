@@ -6,8 +6,18 @@ labstart: 2020
 
 title: ESP32 Remote Control with WebSocket
 description: This tutorial details the use of WebSocket to remotely interact with an ESP32 that exposes a web application through an HTTP server. The WebSocket protocol opens a two-way communication channel between the client browser and the HTTP server run by the ESP32. With this API you can send messages to a server and receive its responses on an event-driven basis without having to go to the server for a response.
+author: Stéphane Calderoni
 xtags: [ESP32, SPIFFS, WebServer, WebSocket, JSON]
-date: 2020-05-16
+date: 2020-04-25
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path: logo/thumbnail.png
+        width: 128
+        height: 128
 
 permalink: pretty
 timezone: Indian/Reunion

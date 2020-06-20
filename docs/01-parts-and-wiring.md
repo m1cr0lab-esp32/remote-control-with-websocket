@@ -55,6 +55,20 @@ I used a pull-up resistor here. In this way, the button status reading pin is ke
 
 Why use a 10 kΩ resistor? Does this value matter? Yes and no... in fact we usually use a resistor between 4.7 kΩ and 100 kΩ. The lower you go down to 4.7 kΩ, the more you increase the leakage current, which therefore wastes energy. The closer you get to 100 kΩ, the greater the risk of interfering with the internal circuitry of the microcontroller, causing erratic detection on the reading pin. I suggest going with 10 kΩ because they are common resistor values and people reading your schematic will be more likely to understand that it's just a pull-up resistor.
 
+Most of the ESP32 pins have internal pull-up (and pull-down) resistors, except for the following pins, which are input-only: **GPIO 34**, **GPIO 35**, **GPIO 36** and **GPIO 39**. It may therefore appear unnecessary to add an external pull-up resistor on the reading pin of the push button. Indeed, to activate the pull-up resistor on the **GPIO 22** pin, simply initialize it as follows:
+
+```cpp
+pinMode(22, INPUT_PULLUP);
+```
+
+But it can happen that we forget about this specificity and simply initialize it with:
+
+```cpp
+pinMode(22, INPUT);
+```
+
+Unfortunately, this oversight has a high chance of damaging your board. So, as a precaution, I still preferred to add an external pull-up resistor to avoid an unpleasant surprise.
+
 
 [Overview]({{ '/' | relative_url }}){: .btn }
 [PlatformIO IDE]({{ '/platformio-ide/' | relative_url }}){: .btn .btn-purple }

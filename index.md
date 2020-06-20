@@ -2,7 +2,6 @@
 layout: default
 title: Overview
 nav_order: 1
-xdate: 2020-04-25
 permalink: /
 ---
 
@@ -34,7 +33,7 @@ Let's see how it works:
 Demo of the application
 {: .caption }
 
-Notice the immediacy of the reaction on both smartphones. The web interface is updated at the precise moment the user acts on the physical or virtual device. You won't get this responsiveness with the simple HTTP protocol and the XMLHttpRequest object...
+Notice the immediacy of the reaction on both smartphones. The web interface is updated at the precise moment the user acts on the physical or virtual device. You won't get this responsiveness with the simple HTTP protocol and the `XMLHttpRequest` object...
 
 This is the strength of WebSockets: the server running on ESP32 can act on the clients on its own initiative, without the clients having requested anything.
 
